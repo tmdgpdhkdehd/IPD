@@ -1,13 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    <TextView
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    tools:context=".MainActivity" >
+
+
+
+    <ListView
+
+        android:id="@+id/listView1"
+
+        android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
-        android:text="알약의 hi,,,,,sto뤼          그 알약의 모든 것"
-        android:textSize="40dp"/>
-</LinearLayout>
+
+        android:layout_alignParentLeft="true"
+
+        android:layout_alignParentTop="true" >
+
+    </ListView>
+
+</RelativeLayout>
