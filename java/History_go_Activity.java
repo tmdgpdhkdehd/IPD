@@ -9,87 +9,132 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import java.util.ArrayList;
+import android.view.Menu;
+import android.widget.ListView;
 
 
 public class History_go_Activity extends Activity {
 
-    SQLiteDatabase db;
     MySQLiteOpenHelper helper;
-    // 전역변수로 사용할 것들을 미리 빼두었다.
+    SQLiteDatabase db;
+    ArrayList<MyBuilding> al = new ArrayList<MyBuilding>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_go);
-        helper = new MySQLiteOpenHelper(History_go_Activity.this, "pill.db", null, 1);
-        // 1. 데이터 저장
-        insert("유저1", 18, "경기도");
-        insert("유저2", 28, "각기도");
-        insert("유저3", 28, "각도기");
-        // 2. 수정하기
-        update("유저1", 58); // 나이만 수정하기
-
-        // 3. 삭제하기
-        delete("유저2");
-
-        // 4. 조회하기
+        helper = new MySQLiteOpenHelper
+                (History_go_Activity.this // 현재 화면 context
+                        , "build.db" // db file name
+                        , null,     // CursorFactory
+                        1);         // 버전명
+        // 데이터 삽입
+//        insert("삼성생명", "역삼동");
+//        insert("한화보험", "삼성동");
+//        insert("흥국생명", "여의도동");
+        insert("타이레놀 정 500mg", "아세트아미노펜　500mg", "디부칠세바케이트");
+        insert("도파프로정2mg", "로피니롤염산염　2.28mg", "마이크로셀락100");
+        // 데이터 수정
+//        update("삼성생명", "갈삼동");
+        // 데이터 삭제
+//        delete("삼성생명");
+//        delete("흥국생명");
+//        delete("한화보험");
+        // 데이터 조회
         select();
-    }
-    // insert
-    public void insert(String name, int age, String address) {
-        db = helper.getWritableDatabase(); // db 객체를 얻어온다. 쓰기 가능
-        ContentValues values = new ContentValues();
-        // db.insert의 매개변수인 values가 ContentValues 변수이므로 그에 맞춤
-        // 데이터의 삽입은 put을 이용한다.
-        values.put("name", name);
-        values.put("age", age);
-        values.put("address", address);
-        db.insert("student", null, values); // 테이블/널컬럼핵/데이터(널컬럼핵=디폴트)
-        // tip : 마우스를 db.insert에 올려보면 매개변수가 어떤 것이 와야 하는지 알 수 있다.
-    }
-    // update
-    public void update (String name, int age) {
-        db = helper.getWritableDatabase(); //db 객체를 얻어온다. 쓰기가능
+        // 2. adapter 만들기
+        MyAdapter adapter = new MyAdapter
 
-        ContentValues values = new ContentValues();
-        values.put("age", age);    //age 값을 수정
-        db.update("student", values, "name=?", new String[]{name});
-        /*
-         * new String[] {name} 이런 간략화 형태가 자바에서 가능하다
-         * 당연하지만, 별도로 String[] asdf = {name} 후 사용하는 것도 동일한 결과가 나온다.
-         */
+                (History_go_Activity.this, // 현재 화면의 context
+                        al,             // data
+                        R.layout.row); // listview 한줄에 해당하는 row
 
-        /*
-         * public int update (String table,
-         * ContentValues values, String whereClause, String[] whereArgs)
-         */
+        // 3. ListView 만들기 (선언, setAdapter)
+        ListView lv = (ListView)findViewById(R.id.listView1);
+        lv.setAdapter(adapter);
+
     }
 
-    // delete
-    public void delete (String name) {
-        db = helper.getWritableDatabase();
-        db.delete("student", "name=?", new String[]{name});
-        Log.i("db", name + "정상적으로 삭제 되었습니다.");
-    }
+//    public void delete(String name) {
+//
+//        db = helper.getWritableDatabase();
+//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
+//        db.delete("building", "name=?", new String[]{name});
+//        // 테이블명 , 조건절 , 조건절의 ?에 해당하는인자
+//
+//    }
 
-    // select
+//    public void update(String name, String address) {
+//
+//        db = helper.getWritableDatabase();
+//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
+//        ContentValues values = new ContentValues();
+//        values.put("address", address); // update 할 내용
+//        //     테이블 명 , update 할 내용
+//        db.update("building", values,
+//                "name=?", new String[]{name});
+//        // 조건절 , 조건절의 ? 에 해당하는 인자값
+//
+//    }
+
+
+
     public void select() {
-        // 1) db의 데이터를 읽어와서, 2) 결과 저장, 3)해당 데이터를 꺼내 사용
-        db = helper.getReadableDatabase(); // db객체를 얻어온다. 읽기 전용
-        Cursor c = db.query("student", null, null, null, null, null, null);
-        /*
-         * 위 결과는 select * from student 가 된다. Cursor는 DB결과를 저장한다. public Cursor
-         * query (String table, String[] columns, String selection, String[]
-         * selectionArgs, String groupBy, String having, String orderBy)
-         */
+
+        db = helper.getReadableDatabase();
+        // 데이터 베이스 객체를 얻어옴. 읽기전용
+        Cursor c = db.query("building", null, null, null,
+                null, null, null);
+
+        // 조회 해옴
         while (c.moveToNext()) {
-            // c의 int가져와라 ( c의 컬럼 중 id) 인 것의 형태이다.
-            int _id = c.getInt(c.getColumnIndexOrThrow("_id"));
-            String name = c.getString(c.getColumnIndexOrThrow("name"));
-            int age = c.getInt(c.getColumnIndexOrThrow("age"));
-            String address = c.getString(c.getColumnIndexOrThrow("address"));
-            Log.i("db", "id: " + _id + ", name : " + name + ", age : " + age
-                    + ", address : " + address);
-        }
+            String name =
+                    c.getString(c.getColumnIndexOrThrow("name"));
+            String ingredient =
+                    c.getString(c.getColumnIndexOrThrow("ingredient"));
+            String additive =
+                    c.getString(c.getColumnIndexOrThrow("additive"));
+
+            Log.i("SQLite", "select ok~! : "
+                    + "(name:"+name+"), "
+                    + "(ingredient:"+ingredient+"), "
+                    + "(additive:"+additive+")");
+
+            // 화면의 TextView 에 결과 보여주기
+//            TextView tv = (TextView)findViewById(R.id.tv);
+//            tv.append(id+", "+name+", "+address+"\n");
+
+            // 1. 데이터를 만든다
+            MyBuilding m = new MyBuilding();
+            m.name = name;
+            m.ingredient = ingredient;
+            m.additive = additive;
+            al.add(m);
+        } // while()
+    } // select()
+
+    public void insert (String name, String ingredient, String additive){
+
+        db = helper.getWritableDatabase();
+        // 쓸수 있는 데이터 베이스 객체를 얻어옴
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("ingredient", ingredient);
+        values.put("additive", additive);
+
+        db.insert("building", null, values);
+        // 테이블 명 , 널컬럼핵, 입력할 값 ContentValues
+        Log.i("SQLite","insert OK~ : " +
+                "(name:"+name+"), (ingredient:"+ingredient+"), (additive:"+additive+")");
     }
-}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+} // end class MainActivity
