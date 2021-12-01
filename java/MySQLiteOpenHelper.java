@@ -1,4 +1,5 @@
 package com.example.ipd;
+//DB 연결을 도와주는 클래스
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+
         /*
          * sql을 사용하기 위한 제반 클래스
          * SQLiteOpenHelper는 사용에 도움을 주는 클래스이다.
@@ -38,18 +40,21 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         // TODO Auto-generated method stub
         // SQL 쿼리문은 다음과 같은 형태로도 실행 할 수도 있다.
         // SQLiteOpenHelper 가 최초 실행 되었을 때
-        String sql = "create table student (" +
-                "_id integer primary key autoincrement, " +
-                "name text, " +
-                "age integer, " +
-                "address text);";
+        // 최초 db 생성 작업
+        String sql = "create table building" +
+                "(name text, " +
+                "ingredient text, " +
+                "additive text);";
         db.execSQL(sql);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
         // db = 적용할 db, old/new 구 버전/신버전
         // TODO Auto-generated method stub
         /*
