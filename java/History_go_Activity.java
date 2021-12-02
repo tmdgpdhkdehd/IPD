@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.io.File;
 import java.util.ArrayList;
 import android.view.Menu;
 import android.widget.ListView;
@@ -26,7 +28,6 @@ public class History_go_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_go);
         helper = new MySQLiteOpenHelper
-
                 (History_go_Activity.this // 현재 화면 context
                         , "build.db" // db file name
                         , null,     // CursorFactory
@@ -37,7 +38,15 @@ public class History_go_Activity extends Activity {
 
         // 데이터 삽입
 //        insert("삼성생명", "역삼동");
-        insert("타이레놀 정 500mg", "아세트아미노펜　500mg");
+        insert("타이레놀 정 500mg", "아세트아미노펜　500mg", "성분");
+        insert("싸이버거  ", "김승혜", "5800원");
+        insert("오세혁  ", "주차의달인", "580ㅁㄴㅇㅁㄴ0원");
+        insert("싸이버거  ", "김승혜", "5800원");
+        insert("싸이버거  ", "김승혜", "5800원");
+        insert("싸이버거  ", "김승혜", "5800원");
+        insert("싸이버거  ", "전승준", "5800원");
+        insert("햄치즈토스트  ", "김승혜", "5800원");
+        insert("싸이버거  ", "김승혜", "5800원");
 
         // 데이터 수정
 //        update("삼성생명", "갈삼동");
@@ -66,18 +75,18 @@ public class History_go_Activity extends Activity {
     }
 
 
-    public void update(String name, String address) {
-
-        db = helper.getWritableDatabase();
-        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
-        ContentValues values = new ContentValues();
-        values.put("address", address); // update 할 내용
-
-        //     테이블 명 , update 할 내용
-        db.update("building", values,
-                "name=?", new String[]{name});
-        // 조건절 , 조건절의 ? 에 해당하는 인자값
-    }
+//    public void update(String name, String address) {
+//
+//        db = helper.getWritableDatabase();
+//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
+//        ContentValues values = new ContentValues();
+//        values.put("address", address); // update 할 내용
+//
+//        //     테이블 명 , update 할 내용
+//        db.update("building", values,
+//                "name=?", new String[]{name});
+//        // 조건절 , 조건절의 ? 에 해당하는 인자값
+//    }
 
 
     public void select() {
@@ -92,10 +101,13 @@ public class History_go_Activity extends Activity {
                     c.getString(c.getColumnIndex("name"));
             String address =
                     c.getString(c.getColumnIndex("address"));
+            String ingredient =
+                    c.getString(c.getColumnIndex("ingredient"));
 
             Log.i("SQLite", "select ok~! : "
                     + "(name:"+name+"), "
-                    + "(address:"+address+")");
+                    + "(address:"+address+"), "
+                    + "(ingredient:"+ingredient+")");
 
             // 화면의 TextView 에 결과 보여주기
 //            TextView tv = (TextView)findViewById(R.id.tv);
@@ -105,23 +117,25 @@ public class History_go_Activity extends Activity {
             MyBuilding m = new MyBuilding();
             m.name = name;
             m.address = address;
+            m.ingredient = ingredient;
             al.add(m);
         } // while()
     } // select()
 
 
-    public void insert (String name, String address){
+    public void insert (String name, String address, String ingredient){
 
         db = helper.getWritableDatabase();
         // 쓸수 있는 데이터 베이스 객체를 얻어옴
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("address", address);
+        values.put("ingredient", ingredient);
 
         db.insert("building", null, values);
         // 테이블 명 , 널컬럼핵, 입력할 값 ContentValues
         Log.i("SQLite","insert OK~ : " +
-                "(name:"+name+"), (address:"+address+")");
+                "(name:"+name+"), (address:"+address+"), (ingredient:"+ingredient+")");
     }
 
     @Override
