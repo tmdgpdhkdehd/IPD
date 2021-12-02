@@ -34,7 +34,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public MySQLiteOpenHelper(Context context, String name,
                               CursorFactory factory, int version) {
         super(context, name, factory, version);
-        // TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub table building has no column named ingredient
     }
 
 
@@ -45,9 +45,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // 최초 db 생성 작업
 
         String sql = "create table building" +
-                "(id integer primary key, " +
-                "name text, " +
-                "address text);";
+                "(name text primary key, " +
+                "address text, " +
+                "ingredient text);";
         db.execSQL(sql);
     }
 
