@@ -25,7 +25,9 @@ public class MyAdapter extends BaseAdapter {
     int layout;
     LayoutInflater inf;
 
+
     public MyAdapter(Context context, ArrayList<MyBuilding> al, int layout) {
+
         this.context = context;
         this.al = al;
         this.layout = layout;
@@ -33,27 +35,36 @@ public class MyAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+
     @Override
     public int getCount() {
+
         // TODO Auto-generated method stub
         return al.size();
     }
 
+
     @Override
     public Object getItem(int position) {
+
         // TODO Auto-generated method stub
         return al.get(position);
     }
 
+
     @Override
     public long getItemId(int position) {
+
         // TODO Auto-generated method stub
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
+
             convertView = inf.inflate(layout, null);
         }
 
@@ -62,9 +73,9 @@ public class MyAdapter extends BaseAdapter {
         TextView tv3 = (TextView) convertView.findViewById(R.id.textView3);
 
         MyBuilding b = al.get(position);
-        tv1.setText(b.name);
-        tv2.setText(b.ingredient);
-        tv3.setText(b.additive);
+        tv1.setText(b.id + "");
+        tv2.setText(b.name);
+        tv3.setText(b.address);
 
         return convertView;
     }
