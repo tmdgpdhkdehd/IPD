@@ -70,12 +70,10 @@ public class MyAdapter extends BaseAdapter {
 
         TextView tv1 = (TextView) convertView.findViewById(R.id.textView1);
         TextView tv2 = (TextView) convertView.findViewById(R.id.textView2);
-        TextView tv3 = (TextView) convertView.findViewById(R.id.textView3);
 
         MyBuilding b = al.get(position);
-        tv1.setText(b.id + "");
-        tv2.setText(b.name);
-        tv3.setText(b.address);
+        tv1.setText(b.name);
+        tv2.setText(b.address);
 
         return convertView;
     }
