@@ -32,7 +32,8 @@ public class History_go_Activity extends Activity {
                         , null,     // CursorFactory
                         1);         // 버전명
 
-
+        // 데이터 삭제
+        delete("타이레놀 정 500mg");
 
         // 데이터 삽입
 //        insert("삼성생명", "역삼동");
@@ -40,11 +41,6 @@ public class History_go_Activity extends Activity {
 
         // 데이터 수정
 //        update("삼성생명", "갈삼동");
-
-        // 데이터 삭제
-        delete("삼성생명");
-        delete("흥국생명");
-//        delete("타이레놀 정 500mg");
 
         // 데이터 조회
         select();
@@ -92,14 +88,12 @@ public class History_go_Activity extends Activity {
                 null, null, null);
         // 조회 해옴
         while (c.moveToNext()) {
-            int id = c.getInt(c.getColumnIndex("id"));
             String name =
                     c.getString(c.getColumnIndex("name"));
             String address =
                     c.getString(c.getColumnIndex("address"));
 
             Log.i("SQLite", "select ok~! : "
-                    + "(id:"+id+"), "
                     + "(name:"+name+"), "
                     + "(address:"+address+")");
 
@@ -109,7 +103,6 @@ public class History_go_Activity extends Activity {
 
             // 1. 데이터를 만든다
             MyBuilding m = new MyBuilding();
-            m.id = id;
             m.name = name;
             m.address = address;
             al.add(m);
