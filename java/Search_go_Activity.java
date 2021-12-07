@@ -247,9 +247,7 @@ public class Search_go_Activity extends AppCompatActivity {
             case REQUEST_PERMISSION: {
                 // 권한이 취소되면 result 배열은 비어있다.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "권한 확인", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "권한 없음", Toast.LENGTH_LONG).show();
                     finish(); //권한이 없으면 앱 종료
                 }
             }
