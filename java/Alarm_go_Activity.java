@@ -104,11 +104,6 @@ public class Alarm_go_Activity extends AppCompatActivity {
         Calendar nextNotifyTime = new GregorianCalendar();
         nextNotifyTime.setTimeInMillis(millis);
 
-//        Date nextDate = nextNotifyTime.getTime();
-//        String date_text = new SimpleDateFormat("MM월 dd일 E요일 a hh시 mm분 ", Locale.getDefault()).format(nextDate);
-//        Toast.makeText(getApplicationContext(),"[처음 실행시] 다음 알람은 " + date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
-
-
         // 이전 설정값으로 TimePicker 초기화
         Date currentTime = nextNotifyTime.getTime();
         SimpleDateFormat HourFormat = new SimpleDateFormat("kk", Locale.getDefault());
@@ -131,9 +126,6 @@ public class Alarm_go_Activity extends AppCompatActivity {
 
     void diaryNotification(Calendar calendar)
     {
-//        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//        Boolean dailyNotify = sharedPref.getBoolean(SettingsActivity.KEY_PREF_DAILY_NOTIFICATION, true);
         Boolean dailyNotify = true; // 무조건 알람을 사용
 
         PackageManager pm = this.getPackageManager();
@@ -163,15 +155,6 @@ public class Alarm_go_Activity extends AppCompatActivity {
                     PackageManager.DONT_KILL_APP);
 
         }
-//        else { //Disable Daily Notifications
-//            if (PendingIntent.getBroadcast(this, 0, alarmIntent, 0) != null && alarmManager != null) {
-//                alarmManager.cancel(pendingIntent);
-//                //Toast.makeText(this,"Notifications were disabled",Toast.LENGTH_SHORT).show();
-//            }
-//            pm.setComponentEnabledSetting(receiver,
-//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-//                    PackageManager.DONT_KILL_APP);
-//        }
     }
 
 }
