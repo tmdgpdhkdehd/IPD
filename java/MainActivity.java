@@ -15,11 +15,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        clearApplicationData();
+        clearApplicationData();
 
         Button search_go_btn = (Button) findViewById(R.id.search_go_btn);
         Button history_go_btn = (Button) findViewById(R.id.history_go_btn);
         Button alarm_go_btn = (Button) findViewById(R.id.alarm_go_btn);
+        Button schedule_go_btn = (Button) findViewById(R.id.schedule_go_btn);
+        Button record_go_btn = (Button) findViewById(R.id.record_go_btn);
 
         search_go_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        schedule_go_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View alarm_go_btn) {
+                Intent intent = new Intent(getApplicationContext(), Schedule_go_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        record_go_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View alarm_go_btn) {
+                Intent intent = new Intent(getApplicationContext(), Record_go_Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 데이터 삭제
@@ -62,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
