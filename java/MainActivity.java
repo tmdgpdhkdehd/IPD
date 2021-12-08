@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        clearApplicationData();
+//        clearApplicationData();
 
         Button search_go_btn = (Button) findViewById(R.id.search_go_btn);
         Button history_go_btn = (Button) findViewById(R.id.history_go_btn);
@@ -65,33 +65,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 데이터 삭제
-    public void clearApplicationData() {
-        File cache = getCacheDir();
-        try {
-        } catch (Exception e) {
-        }
-        File appDir = new File(cache.getParent());
-        if (appDir.exists()) {
-            String[] children = appDir.list();
-            for (String s : children) {
-                if (!s.equals("lib") && !(s.equals("shared_prefs"))) {
-                    deleteDir(new File(appDir, s));
-                }
-            }
-        }
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-        // The directory is now empty or this is a file so delete it
-        return dir.delete();
-    }
+//    public void clearApplicationData() {
+//        File cache = getCacheDir();
+//        try {
+//        } catch (Exception e) {
+//        }
+//        File appDir = new File(cache.getParent());
+//        if (appDir.exists()) {
+//            String[] children = appDir.list();
+//            for (String s : children) {
+//                if (!s.equals("lib") && !(s.equals("shared_prefs"))) {
+//                    deleteDir(new File(appDir, s));
+//                }
+//            }
+//        }
+//    }
+//
+//    public static boolean deleteDir(File dir) {
+//        if (dir != null && dir.isDirectory()) {
+//            String[] children = dir.list();
+//            for (int i = 0; i < children.length; i++) {
+//                boolean success = deleteDir(new File(dir, children[i]));
+//                if (!success) {
+//                    return false;
+//                }
+//            }
+//        }
+//        // The directory is now empty or this is a file so delete it
+//        return dir.delete();
+//    }
 }
