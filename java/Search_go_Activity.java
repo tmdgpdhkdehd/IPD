@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,6 +53,15 @@ public class Search_go_Activity extends AppCompatActivity {
         ivCapture = findViewById(R.id.ivCapture); //ImageView 선언
         btnCamera = findViewById(R.id.btnCapture); //Button 선언
         btnSave = findViewById(R.id.btnSave); //Button 선언
+        Button back_btn = (Button) findViewById(R.id.back_btn);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View search_go_btn) {
+                onBackPressed();
+            }
+        });
+
         loadImgArr();
         //촬영
         btnCamera.setOnClickListener(v -> captureCamera());
@@ -252,5 +262,10 @@ public class Search_go_Activity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
