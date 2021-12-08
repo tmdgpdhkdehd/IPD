@@ -1,37 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/alarm"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".Alarm_go_Activity"
-    android:background="@drawable/alarm">
+    tools:context=".Alarm_go_Activity">
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:background="#00000000" />
 
     <TimePicker
         android:id="@+id/timePicker"
-        android:layout_width="350dp"
-        android:layout_height="192dp"
+        android:layout_width="wrap_content"
+        android:layout_height="159dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="10dp"
         android:timePickerMode="spinner"
-        app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <EditText
-        android:id="@+id/edittext"
-        android:layout_width="330dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:background="#00000000" />
+        <EditText
+            android:id="@+id/edittext"
+            android:layout_width="230dp"
+            android:layout_height="30dp"
+            android:hint="알람 내용을 입력해주세요"
+            android:textSize="10dp"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:layout_marginTop="170dp"
+            android:layout_marginLeft="150dp"
+            android:background="#00000000" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
         android:background="#00000000"
+        android:layout_marginTop="205dp"
+        android:layout_marginLeft="230dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -41,13 +55,14 @@
         android:id="@+id/textview1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="235dp"
         android:textSize="15dp" />
 
     <TextView
         android:id="@+id/textview2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="25dp" />
-</LinearLayout>
+        android:layout_marginTop="260dp"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+</RelativeLayout>
