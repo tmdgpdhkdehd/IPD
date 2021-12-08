@@ -38,6 +38,15 @@ public class Alarm_go_Activity extends AppCompatActivity {
         final TextView textView1=(TextView)findViewById(R.id.textview1);
         final TextView textView2=(TextView)findViewById(R.id.textview2);
 
+        Button back_btn = (Button) findViewById(R.id.back_btn);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View search_go_btn) {
+                onBackPressed();
+            }
+        });
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +164,11 @@ public class Alarm_go_Activity extends AppCompatActivity {
                     PackageManager.DONT_KILL_APP);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
 }
