@@ -1,47 +1,57 @@
 package com.example.ipd;
 
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;package com.example.ipd;
-
 import android.content.Context;
-import android.content.res.Resources;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
-
+import android.widget.TextView;
+import android.widget.Toast;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class History_go_Activity extends Activity {
+    ListView listView;
+    EditText editSearch;        // 검색어를 입력할 Input 창
+    SearchAdapter adapter;
+    ArrayList<String> arraylist;
+    List<String> list;
 
-    MySQLiteOpenHelper helper;
-    SQLiteDatabase db;
-    ArrayList<MyBuilding> al = new ArrayList<MyBuilding>();
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,151 +59,93 @@ public class History_go_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_go);
 
-        clearApplicationData();
+//        clearApplicationData();
 
-        helper = new MySQLiteOpenHelper
-                (History_go_Activity.this // 현재 화면 context
-                        , "build.db" // db file name
-                        , null,     // CursorFactory
-                        1);         // 버전명
- 
-//        Context context = getApplicationContext();
-        Drawable drawable1 = getResources().getDrawable(R.drawable.tylenol_tab);
+        Button back_btn = (Button) findViewById(R.id.back_btn);
 
-//// drawable 타입을 bitmap으로 변경
-        Bitmap bitmap1 = ((BitmapDrawable)drawable1).getBitmap();
-//
-//// bitmap 타입을 drawable로 변경
-//        Drawable drawable2 = new BitmapDrawable(bitmap1);
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View search_go_btn) {
+                onBackPressed();
+            }
+        });
 
-//        bitmapToByteArray(R.drawable.tylenol_tab);
+        editSearch = (EditText) findViewById(R.id.edittext);
+        listView = (ListView)this.findViewById(R.id.listView1);
 
-        // 데이터 삭제
-//        delete("타이레놀 정 500mg");
+        // 리스트를 생성한다.
+        list = new ArrayList<String>();
 
-        // 데이터 삽입
-//        insert("삼성생명", "역삼동");
-        insert(bitmap1,"타이레놀 정 500mg", "아세트아미노펜　500mg", "성분");
-//        insert("싸이버거  ", "김승혜", "5800원");
-//        insert("오세혁  ", "주차의달인", "580ㅁㄴㅇㅁㄴ0원");
-//        insert("싸이버거  ", "김승혜", "5800원");
-//        insert("싸이버거  ", "김승혜", "5800원");
-//        insert("싸이버거  ", "김승혜", "5800원");
-//        insert("싸이버거  ", "전승준", "5800원");
-//        insert("햄치즈토스트  ", "김승혜", "5800원");
-//        insert("싸이버거  ", "김승혜", "5800원");
+        // 검색에 사용할 데이터을 미리 저장한다.
+        settingList();
+//        ArrayList<String> items = new ArrayList<>();
+//        items.add("Tylenol");
+//        items.add("Gold");
 
-        // 데이터 수정
-//        update("삼성생명", "갈삼동");
+        // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
+        arraylist = new ArrayList<String>();
+        arraylist.addAll(list);
 
-        // 데이터 조회
-//        select();
-//
-////         2. adapter 만들기
-//        MyAdapter adapter = new MyAdapter
-//                (History_go_Activity.this, // 현재 화면의 context
-//                        al,             // data
-//                        R.layout.row); // listview 한줄에 해당하는 row
-//
-//        // 3. ListView 만들기 (선언, setAdapter)
-//        ListView lv = (ListView)findViewById(R.id.listView1);
-//        lv.setAdapter(adapter);
+        // 리스트에 연동될 아답터를 생성한다.
+        adapter = new SearchAdapter(list, this);
+
+        // 리스트뷰에 아답터를 연결한다.
+//        CustomAdapter adapter = new CustomAdapter(this, 0, items);
+        listView.setAdapter(adapter);
+
+        // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // input창에 문자를 입력할때마다 호출된다.
+                // search 메소드를 호출한다.
+                String text = editSearch.getText().toString();
+                search(text);
+            }
+        });
     }
 
+    private class CustomAdapter extends ArrayAdapter<String> {
+        private ArrayList<String> items;
 
-//    public void delete(String name) {
-//
-//        db = helper.getWritableDatabase();
-//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
-//        db.delete("building", "name=?", new String[]{name});
-//        // 테이블명 , 조건절 , 조건절의 ?에 해당하는인자
-//    }
-
-
-//    public void update(String name, String address) {
-//
-//        db = helper.getWritableDatabase();
-//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
-//        ContentValues values = new ContentValues();
-//        values.put("address", address); // update 할 내용
-//
-//        //     테이블 명 , update 할 내용
-//        db.update("building", values,
-//                "name=?", new String[]{name});
-//        // 조건절 , 조건절의 ? 에 해당하는 인자값
-//    }
-
-
-//    public void select() {
-//
-//        db = helper.getReadableDatabase();
-//        // 데이터 베이스 객체를 얻어옴. 읽기전용
-//        Cursor c = db.query("building", null, null, null,
-//                null, null, null);
-//        // 조회 해옴
-//        while (c.moveToNext()) {
-//            Bitmap image = c.getType(c.getColumnIndex("image"));
-//            String name =
-//                    c.getString(c.getColumnIndex("name"));
-//            String address =
-//                    c.getString(c.getColumnIndex("address"));
-//            String ingredient =
-//                    c.getString(c.getColumnIndex("ingredient"));
-//
-//            Log.i("SQLite", "select ok~! : "
-//                    + "(image:"+image+"), "
-//                    + "(name:"+name+"), "
-//                    + "(address:"+address+"), "
-//                    + "(ingredient:"+ingredient+")");
-//
-//            // 화면의 TextView 에 결과 보여주기
-////            TextView tv = (TextView)findViewById(R.id.tv);
-////            tv.append(id+", "+name+", "+address+"\n");
-//
-//            // 1. 데이터를 만든다
-//            MyBuilding m = new MyBuilding();
-//            m.image = image;
-//            m.name = name;
-//            m.address = address;
-//            m.ingredient = ingredient;
-//            al.add(m);
-//        } // while()
-//    } // select()
-
-
-    public void insert (Bitmap image, String name, String address, String ingredient){
-
-//        getByteArrayFromDrawable(image);
-
-        db = helper.getWritableDatabase();
-        // 쓸수 있는 데이터 베이스 객체를 얻어옴
-        ContentValues value = new  ContentValues();
-        value.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        value.put("name", name);
-        value.put("address", address);
-        value.put("ingredient", ingredient);
-
-//        byte[] appIcon = getByteArrayFromDrawable(getIcon());
-//        SQLiteStatement p = db.compileStatement("INSERT INTO value values(?)");
-
-        db.insert("building", null, value);
-        // 테이블 명 , 널컬럼핵, 입력할 값 ContentValues
-        Log.i("SQLite","insert OK~ : " +
-                "(image:"+image+"), (name:"+name+"), (address:"+address+"), (ingredient:"+ingredient+")");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        public CustomAdapter(Context context, int textViewResourceId, ArrayList<String> objects) {
+            super(context, textViewResourceId, objects);
+            this.items = objects;
+        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService
+                        (Context.LAYOUT_INFLATER_SERVICE);
+                v = vi.inflate(R.layout.row, null);
+            }
+// ImageView 인스턴스
+            ImageView imageView = (ImageView)v.findViewById(R.id.ImageView1);
+// 리스트뷰의 아이템에 이미지를 변경한다.
+            if("타이레놀".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.ic_launcher_background);
+            else if("아무튼약".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.ic_launcher_background);
+            TextView textView = (TextView)v.findViewById(R.id.textView1);
+            textView.setText(items.get(position));
+            final String text = items.get(position);
+            return v;
+        }
     }
 
     // 데이터 삭제
     public void clearApplicationData() {
         File cache = getCacheDir();
-            try {
+        try {
         } catch (Exception e) {
         }
         File appDir = new File(cache.getParent());
@@ -221,167 +173,67 @@ public class History_go_Activity extends Activity {
         return dir.delete();
     }
 
-
-//    // Bitmap을 Byte로 변환
-//    public byte[] bitmapToByteArray(Bitmap bitmap) {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-//        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
-//        byte[] byteArray = stream.toByteArray() ;
-//        return byteArray ;
-//    }
-
-    // Byte를 Bitmap으로 변환
-    public Bitmap byteArrayToBitmap(byte[] byteArray) {
-        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0,
-                byteArray.length ) ;
-        return bitmap ;
-    }
-
-    public byte[] getByteArrayFromDrawable(Drawable d){
-        Bitmap bitmap = ((BitmapDrawable)d).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress( Bitmap.CompressFormat.PNG, 100, stream) ;
-        byte[] data = stream.toByteArray();
-
-        return data;
-    }
-
-} // end class MainActivity
-
-
-import java.io.File;
-import java.util.ArrayList;
-import android.view.Menu;
-import android.widget.ListView;
-
-
-public class History_go_Activity extends Activity {
-
-    MySQLiteOpenHelper helper;
-    SQLiteDatabase db;
-    ArrayList<MyBuilding> al = new ArrayList<MyBuilding>();
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history_go);
-        helper = new MySQLiteOpenHelper
-                (History_go_Activity.this // 현재 화면 context
-                        , "build.db" // db file name
-                        , null,     // CursorFactory
-                        1);         // 버전명
-
-        // 데이터 삭제
-        delete("타이레놀 정 500mg");
-
-        // 데이터 삽입
-//        insert("삼성생명", "역삼동");
-        insert("타이레놀 정 500mg", "아세트아미노펜　500mg", "성분");
-        insert("싸이버거  ", "김승혜", "5800원");
-        insert("오세혁  ", "주차의달인", "580ㅁㄴㅇㅁㄴ0원");
-        insert("싸이버거  ", "김승혜", "5800원");
-        insert("싸이버거  ", "김승혜", "5800원");
-        insert("싸이버거  ", "김승혜", "5800원");
-        insert("싸이버거  ", "전승준", "5800원");
-        insert("햄치즈토스트  ", "김승혜", "5800원");
-        insert("싸이버거  ", "김승혜", "5800원");
-
-        // 데이터 수정
-//        update("삼성생명", "갈삼동");
-
-        // 데이터 조회
-        select();
-
-        // 2. adapter 만들기
-        MyAdapter adapter = new MyAdapter
-                (History_go_Activity.this, // 현재 화면의 context
-                        al,             // data
-                        R.layout.row); // listview 한줄에 해당하는 row
-
-        // 3. ListView 만들기 (선언, setAdapter)
-        ListView lv = (ListView)findViewById(R.id.listView1);
-        lv.setAdapter(adapter);
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
+    // 검색을 수행하는 메소드
+    public void search(String charText) {
 
-    public void delete(String name) {
+        // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
+        list.clear();
 
-        db = helper.getWritableDatabase();
-        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
-        db.delete("building", "name=?", new String[]{name});
-        // 테이블명 , 조건절 , 조건절의 ?에 해당하는인자
+        // 문자 입력이 없을때는 모든 데이터를 보여준다.
+        if (charText.length() == 0) {
+            list.addAll(arraylist);
+        }
+        // 문자 입력을 할때..
+        else
+        {
+            // 리스트의 모든 데이터를 검색한다.
+            for(int i = 0;i < arraylist.size(); i++)
+            {
+                // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
+                if (arraylist.get(i).toLowerCase().contains(charText))
+                {
+                    // 검색된 데이터를 리스트에 추가한다.
+                    list.add(arraylist.get(i));
+                }
+            }
+        }
+        // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
+        adapter.notifyDataSetChanged();
     }
 
-
-//    public void update(String name, String address) {
-//
-//        db = helper.getWritableDatabase();
-//        // 쓸 수 있는 데이터 베이스 객체를 얻어옴
-//        ContentValues values = new ContentValues();
-//        values.put("address", address); // update 할 내용
-//
-//        //     테이블 명 , update 할 내용
-//        db.update("building", values,
-//                "name=?", new String[]{name});
-//        // 조건절 , 조건절의 ? 에 해당하는 인자값
-//    }
-
-
-    public void select() {
-
-        db = helper.getReadableDatabase();
-        // 데이터 베이스 객체를 얻어옴. 읽기전용
-        Cursor c = db.query("building", null, null, null,
-                null, null, null);
-        // 조회 해옴
-        while (c.moveToNext()) {
-            String name =
-                    c.getString(c.getColumnIndex("name"));
-            String address =
-                    c.getString(c.getColumnIndex("address"));
-            String ingredient =
-                    c.getString(c.getColumnIndex("ingredient"));
-
-            Log.i("SQLite", "select ok~! : "
-                    + "(name:"+name+"), "
-                    + "(address:"+address+"), "
-                    + "(ingredient:"+ingredient+")");
-
-            // 화면의 TextView 에 결과 보여주기
-//            TextView tv = (TextView)findViewById(R.id.tv);
-//            tv.append(id+", "+name+", "+address+"\n");
-
-            // 1. 데이터를 만든다
-            MyBuilding m = new MyBuilding();
-            m.name = name;
-            m.address = address;
-            m.ingredient = ingredient;
-            al.add(m);
-        } // while()
-    } // select()
-
-
-    public void insert (String name, String address, String ingredient){
-
-        db = helper.getWritableDatabase();
-        // 쓸수 있는 데이터 베이스 객체를 얻어옴
-        ContentValues values = new ContentValues();
-        values.put("name", name);
-        values.put("address", address);
-        values.put("ingredient", ingredient);
-
-        db.insert("building", null, values);
-        // 테이블 명 , 널컬럼핵, 입력할 값 ContentValues
-        Log.i("SQLite","insert OK~ : " +
-                "(name:"+name+"), (address:"+address+"), (ingredient:"+ingredient+")");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    // 검색에 사용될 데이터를 리스트에 추가한다.
+    private void settingList(){
+        list.add("채수빈");
+        list.add("박지현");
+        list.add("suzy");
+        list.add("남태현");
+        list.add("ha성운");
+        list.add("cristal");
+        list.add("강승윤");
+        list.add("손나은");
+        list.add("남주혁");
+        list.add("루이");
+        list.add("진영");
+        list.add("슬기");
+        list.add("이해인");
+        list.add("고원희");
+        list.add("설리");
+        list.add("공명");
+        list.add("김예림");
+        list.add("혜리");
+        list.add("웬디");
+        list.add("박혜수");
+        list.add("카이");
+        list.add("진세연");
+        list.add("동호");
+        list.add("박세완");
+        list.add("도희");
+        list.add("창모");
+        list.add("허영지");
     }
 } // end class MainActivity
