@@ -1,13 +1,13 @@
 package com.example.ipd;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 import android.app.Activity;
@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,7 +31,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -47,6 +47,7 @@ public class History_go_Activity extends Activity {
     SearchAdapter adapter;
     ArrayList<String> arraylist;
     List<String> list;
+    ArrayList<MyBuilding> al = new ArrayList<MyBuilding>();
 
     @Override
     protected void onResume() {
@@ -54,7 +55,7 @@ public class History_go_Activity extends Activity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_go);
@@ -129,18 +130,30 @@ public class History_go_Activity extends Activity {
                 v = vi.inflate(R.layout.row, null);
             }
 // ImageView 인스턴스
-            ImageView imageView = (ImageView)v.findViewById(R.id.ImageView1);
+            ImageView imageView = (ImageView)v.findViewById(R.id.imageView);
 // 리스트뷰의 아이템에 이미지를 변경한다.
-            if("타이레놀".equals(items.get(position)))
-                imageView.setImageResource(R.drawable.ic_launcher_background);
-            else if("아무튼약".equals(items.get(position)))
-                imageView.setImageResource(R.drawable.ic_launcher_background);
+            if("Uusa".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.uusa_image);
+            else if("B-max Gold".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.gold_image);
+            else if("Tylenol".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.tylenol_image);
+            else if("VitaminC 1000".equals(items.get(position)))
+                imageView.setImageResource(R.drawable.vitamin_image);
             TextView textView = (TextView)v.findViewById(R.id.textView1);
             textView.setText(items.get(position));
             final String text = items.get(position);
+            Button button = (Button)v.findViewById(R.id.button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(History_go_Activity.this, text, Toast.LENGTH_SHORT).show();
+                }
+            });
             return v;
         }
     }
+
 
     // 데이터 삭제
     public void clearApplicationData() {
@@ -208,32 +221,9 @@ public class History_go_Activity extends Activity {
 
     // 검색에 사용될 데이터를 리스트에 추가한다.
     private void settingList(){
-        list.add("채수빈");
-        list.add("박지현");
-        list.add("suzy");
-        list.add("남태현");
-        list.add("ha성운");
-        list.add("cristal");
-        list.add("강승윤");
-        list.add("손나은");
-        list.add("남주혁");
-        list.add("루이");
-        list.add("진영");
-        list.add("슬기");
-        list.add("이해인");
-        list.add("고원희");
-        list.add("설리");
-        list.add("공명");
-        list.add("김예림");
-        list.add("혜리");
-        list.add("웬디");
-        list.add("박혜수");
-        list.add("카이");
-        list.add("진세연");
-        list.add("동호");
-        list.add("박세완");
-        list.add("도희");
-        list.add("창모");
-        list.add("허영지");
+        list.add("Uusa");
+        list.add("B-max Gold");
+        list.add("Tylenol");
+        list.add("VitaminC 1000");
     }
 } // end class MainActivity
