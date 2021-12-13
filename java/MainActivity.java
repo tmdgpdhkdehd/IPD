@@ -1,12 +1,12 @@
 package com.example.ipd;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.content.Intent;
 
-import java.io.File;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View search_go_btn) {
                 Intent intent = new Intent(getApplicationContext(), Search_go_Activity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
 
