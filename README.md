@@ -14,3 +14,5 @@ https://recipes4dev.tistory.com/120
 https://docko.tistory.com/101  
 <검색 참고사이트>  
 https://sharp57dev.tistory.com/11  
+
+*AI 모델파일은 올려놓지 않음*
