@@ -1,6 +1,6 @@
 # IPD
 4EVER 알약 판별기+α 제품 소프트웨어 개발  
-  
+라즈베리 파이 7인치 기준 제작  
     
 <알람 참고사이트>  
 https://webnautes.tistory.com/1365  
