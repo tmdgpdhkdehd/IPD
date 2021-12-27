@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -54,6 +55,20 @@ public class SearchAdapter extends BaseAdapter {
 
         // 리스트에 있는 데이터를 리스트뷰 셀에 뿌린다.
         viewHolder.label.setText(list.get(position));
+
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.ImageView1);
+        // 리스트뷰의 아이템에 이미지를 변경한다.
+        if("Uusa".equals(list.get(position)))
+            imageView.setImageResource(R.drawable.uusa_image);
+        else if("VitaminC 1000".equals(list.get(position)))
+            imageView.setImageResource(R.drawable.vitamin_image);
+        else if("B-Max Gold".equals(list.get(position)))
+            imageView.setImageResource(R.drawable.gold_image);
+        else if("Tylenol".equals(list.get(position)))
+            imageView.setImageResource(R.drawable.tylenol_image);
+        TextView textView = (TextView)convertView.findViewById(R.id.textView1);
+        textView.setText(list.get(position));
+        final String text = list.get(position);
 
         return convertView;
     }
