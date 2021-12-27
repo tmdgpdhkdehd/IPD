@@ -15,4 +15,5 @@ https://docko.tistory.com/101
 <검색 참고사이트>  
 https://sharp57dev.tistory.com/11  
 
-*AI 모델파일은 올려놓지 않음*
+※ AI 모델파일은 올려놓지 않음 ※  
+※ 디자인은 디자인학과 팀원들의 저작권이기 때문에 올리지 않음 ※
