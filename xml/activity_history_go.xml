@@ -14,7 +14,7 @@
         android:background="#00000000" />
 
     <EditText
-        android:id="@+id/edittext"
+        android:id="@+id/history_EditText"
         android:layout_width="550dp"
         android:layout_height="45dp"
         android:layout_marginLeft="210dp"
@@ -24,9 +24,17 @@
         android:privateImeOptions="defaultInputmode=korean"
         android:textSize="17dp" />
 
+    <SearchView
+        android:id="@+id/history_searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="800dp"
+        android:layout_marginTop="50dp"/>
+
+
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/history_listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
