@@ -24,57 +24,61 @@
         android:layout_marginTop="80sp"/>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/result"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="170sp"
-                android:layout_marginTop="320sp"
-                android:text=""
-                android:textColor="#C30000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170sp"
+            android:layout_marginTop="320sp"
+            android:text=""
+            android:textColor="#C30000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/confidence"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="500sp"
-                android:layout_marginTop="300sp"
-                android:textColor="#000"
-                android:textSize="15sp" />
-            <Button
-                android:id="@+id/uusa_btn"
-                android:layout_width="200dp"
-                android:layout_height="15sp"
-                android:background="#0000"
-                android:layout_marginLeft="500sp"
-                android:layout_marginTop="300sp"/>
-            <Button
-                android:id="@+id/gold_btn"
-                android:layout_width="200dp"
-                android:layout_height="15sp"
-                android:background="#0000"
-                android:layout_marginLeft="500sp"
-                android:layout_marginTop="320sp"/>
-            <Button
-                android:id="@+id/tylenol_btn"
-                android:layout_width="200dp"
-                android:layout_height="15sp"
-                android:background="#0000"
-                android:layout_marginLeft="500sp"
-                android:layout_marginTop="340sp"/>
-            <Button
-                android:id="@+id/vitamin_btn"
-                android:layout_width="200dp"
-                android:layout_height="15sp"
-                android:background="#0000"
-                android:layout_marginLeft="500sp"
-                android:layout_marginTop="360sp"/>
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/confidence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="500sp"
+            android:layout_marginTop="300sp"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/uusa_btn"
+            android:layout_width="200dp"
+            android:layout_height="15sp"
+            android:layout_marginLeft="500sp"
+            android:layout_marginTop="300sp"
+            android:background="#0000" />
+
+        <Button
+            android:id="@+id/gold_btn"
+            android:layout_width="200dp"
+            android:layout_height="15sp"
+            android:layout_marginLeft="500sp"
+            android:layout_marginTop="320sp"
+            android:background="#0000" />
+
+        <Button
+            android:id="@+id/tylenol_btn"
+            android:layout_width="200dp"
+            android:layout_height="15sp"
+            android:layout_marginLeft="500sp"
+            android:layout_marginTop="340sp"
+            android:background="#0000" />
+
+        <Button
+            android:id="@+id/vitamin_btn"
+            android:layout_width="200dp"
+            android:layout_height="15sp"
+            android:layout_marginLeft="500sp"
+            android:layout_marginTop="360sp"
+            android:background="#0000" />
+    </RelativeLayout>
 
 </RelativeLayout>
